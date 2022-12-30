@@ -1,23 +1,20 @@
-//Problem Link:-https://leetcode.com/problems/combination-sum/
+//Problem Link:-https://leetcode.com/problems/all-paths-from-source-to-target/description/
 class Solution {
 public:
-    vector<vector<int>>ans;
-    void solve(vector<int>candidates, int target,vector<int>temp, int size){
-        if(size<0 || target<0)return ;
-        if(target==0){
-            ans.push_back(temp);
-            return ;
-        }
-        solve(candidates, target,temp,size-1);
-        temp.push_back(candidates[size]);
-        solve(candidates, target-candidates[size],temp,size);
-        
-        
+    void dfs(vector<vector<int>>& g, vector<vector<int>>& res, vector<int>& path, int cur) {
+        path.push_back(cur);
+        if (cur == g.size() - 1)
+            res.push_back(path);
+        else for (auto it: g[cur])
+            dfs(g, res, path, it);
+        path.pop_back();
+
     }
-    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
-        vector<int>temp;
-        int n=candidates.size();
-        solve(candidates, target,temp,n-1);
-        return ans;
+
+    vector<vector<int>> allPathsSourceTarget(vector<vector<int>>& g) {
+        vector<vector<int>> paths;
+        vector<int> path;
+        dfs(g, paths, path, 0);
+        return paths;
     }
 };
